@@ -1,6 +1,6 @@
 // app/api/auth/login/route.ts
 import { NextRequest } from 'next/server';
-import { compare, hash } from 'bcryptjs';
+import { compare } from 'bcryptjs';
 
 // Default credentials (in production, use environment variables or a database)
 const DEFAULT_USERNAME = process.env.MONITOR_USERNAME || 'admin';

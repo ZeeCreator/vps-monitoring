@@ -1,7 +1,6 @@
-import { NextRequest } from 'next/server';
 import si from 'systeminformation';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const cpuLoad = await si.currentLoad();
     const mem = await si.mem();

@@ -44,6 +44,60 @@ import { useMetricsStream } from './useMetricsStream';
 // Dynamically import ApexCharts components to avoid SSR issues
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
+type NetworkInterface = {
+  iface: string;
+  ifaceName: string;
+  ip4: string;
+  ip6: string;
+  mac: string;
+  internal: boolean;
+  virtual: boolean;
+  operstate: string;
+  type: string;
+  duplex: string;
+  mtu: number;
+  speed: number;
+  metric: number;
+  rx_bytes: number;
+  tx_bytes: number;
+  rx_dropped: number;
+  tx_dropped: number;
+  rx_errors: number;
+  tx_errors: number;
+};
+
+type NetworkStats = {
+  iface: string;
+  operstate: string;
+  rx_bytes: number;
+  rx_dropped: number;
+  rx_errors: number;
+  tx_bytes: number;
+  tx_dropped: number;
+  tx_errors: number;
+  rx_sec: number;
+  tx_sec: number;
+};
+
+type DiskStorage = {
+  fs: string;
+  type: string;
+  size: number;
+  used: number;
+  available: number;
+  use: number;
+  mount: string;
+};
+
+type FsStats = {
+  rx_bytes: number;
+  wx_bytes: number;
+  tx_bytes: number;
+  rx_errors: number;
+  wx_errors: number;
+  tx_errors: number;
+};
+
 type DetailedMetricsData = {
   timestamp: string;
   cpu: {
@@ -78,12 +132,12 @@ type DetailedMetricsData = {
     arch: string;
   };
   network: {
-    interfaces: any[];
-    stats: any[];
+    interfaces: NetworkInterface[];
+    stats: NetworkStats[];
   };
   disk: {
-    storage: any[];
-    fsStats: any[];
+    storage: DiskStorage[];
+    fsStats: FsStats[];
   };
   processes: {
     total: number;
@@ -239,7 +293,7 @@ const Dashboard = () => {
     xaxis: {
       categories: detailedMetrics?.disk.storage.map(disk => disk.fs) || [],
       labels: {
-        formatter: (val: number) => `${(val / 1024 / 1024 / 1024).toFixed(1)} GB` // Format in GB
+        formatter: (value: string) => value // Just return the string value as is for the labels
       }
     },
     yaxis: {

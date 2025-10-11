@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
@@ -30,7 +29,7 @@ export default function Home() {
             Monitor Your VPS <span className="text-blue-600">in Real-Time</span>
           </h1>
           <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-            Comprehensive monitoring solution to track your server's performance, 
+            Comprehensive monitoring solution to track your server&apos;s performance, 
             resource utilization, and system health.
           </p>
           

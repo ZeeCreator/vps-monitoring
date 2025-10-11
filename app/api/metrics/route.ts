@@ -1,7 +1,10 @@
-import { NextRequest } from 'next/server';
 import si from 'systeminformation';
 
-export async function GET(request: NextRequest) {
+
+
+
+
+export async function GET() {
   try {
     // Get CPU information
     const cpu = await si.cpu();
@@ -34,14 +37,14 @@ export async function GET(request: NextRequest) {
         cores: cpu.cores,
         speed: cpu.speed,
         currentSpeed: cpuCurrentSpeed.avg,
-        temperature: cpuTemperature.main,
-        load: currentLoad.avgload,
-        currentLoad: currentLoad.currentLoad,
-        currentLoadUser: currentLoad.currentLoadUser,
-        currentLoadSystem: currentLoad.currentLoadSystem,
-        currentLoadNice: currentLoad.currentLoadNice,
-        currentLoadIdle: currentLoad.currentLoadIdle,
-        currentLoadIrq: currentLoad.currentLoadIrq
+        temperature: cpuTemperature.main || 0,
+        load: currentLoad.avgLoad || 0,
+        currentLoad: currentLoad.currentLoad || 0,
+        currentLoadUser: currentLoad.currentLoadUser || 0,
+        currentLoadSystem: currentLoad.currentLoadSystem || 0,
+        currentLoadNice: currentLoad.currentLoadNice || 0,
+        currentLoadIdle: currentLoad.currentLoadIdle || 0,
+        currentLoadIrq: currentLoad.currentLoadIrq || 0
       },
       memory: {
         total: mem.total,
@@ -82,7 +85,7 @@ export async function GET(request: NextRequest) {
         'Content-Type': 'application/json',
       },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error collecting metrics:', error);
     return new Response(JSON.stringify({ error: 'Failed to collect metrics' }), {
       status: 500,
