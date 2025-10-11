@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  vps-monitoring:
+    build: .
+    container_name: vps-monitoring
+    ports:
+      - "8082:3000"
+    environment:
+      - NODE_ENV=production
+      - MONITOR_USERNAME=${MONITOR_USERNAME:-admin}
+      - MONITOR_PASSWORD_HASH=${MONITOR_PASSWORD_HASH:-$2a$10$8K5pL8Pn8p9Z.xJ5Y4pHseN0.bFm9zP6yqJ0y3z1o3z1o3z1o3z1o}  # Default hash for 'password'
+      - SI_PROC_PATH=/host/proc
+      - SI_SYS_PATH=/host/sys
+    volumes:
+      # Mount the host's /proc, /sys, and /etc to enable system metrics collection
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/machine-id:/etc/machine-id:ro
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge

@@ -1,0 +1,24 @@
+[Unit]
+Description=VPS Monitoring System
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/vps-monitoring
+ExecStart=/usr/bin/npm start
+Environment=PORT=8082
+Restart=always
+RestartSec=10
+
+# Environment variables
+Environment=NODE_ENV=production
+Environment=MONITOR_USERNAME=admin
+Environment=MONITOR_PASSWORD_HASH=$2a$10$8K5pL8Pn8p9Z.xJ5Y4pHseN0.bFm9zP6yqJ0y3z1o3z1o3z1o3z1o
+
+# Increase the number of file descriptors
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
